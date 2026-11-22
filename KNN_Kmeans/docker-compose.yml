@@ -1,0 +1,55 @@
+services:
+  db:
+    image: postgres:16-alpine
+    container_name: cybersecurity_db
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: cybersecurity
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d cybersecurity"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: cybersecurity_backend
+    environment:
+      DATABASE_URL: postgresql+psycopg2://postgres:postgres@db:5432/cybersecurity
+      SECRET_KEY: cybersecurity-super-secret-key-2026-prod
+      DEFAULT_DATASET_PATH: /app/dataset/cybersecurity_attacks.csv
+      SEED_ADMIN_EMAIL: admin@cybersecurity.local
+      SEED_ADMIN_PASSWORD: Admin@123456
+      SEED_ANALYST_EMAIL: analyst@cybersecurity.local
+      SEED_ANALYST_PASSWORD: Analyst@123456
+    volumes:
+      - ./dataset:/app/dataset:ro
+      - ./ml/artifacts:/app/ml/artifacts
+    ports:
+      - "8000:8000"
+    depends_on:
+      db:
+        condition: service_healthy
+    restart: unless-stopped
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: cybersecurity_frontend
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+    restart: unless-stopped
+
+volumes:
+  pgdata:

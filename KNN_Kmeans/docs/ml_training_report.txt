@@ -1,0 +1,275 @@
+CYBERSECURITY MACHINE LEARNING REPORT: L3-L11
+=================================================================
+Generated (UTC): 2026-11-16T07:31:22.079108+00:00
+Dataset: dataset\cybersecurity_attacks.csv
+Dataset SHA256: 7035d0e7f38f1217a76842209da2f8d47ef54c67f55519ade56f53be64c72d24
+Software versions: {'python': '3.11.0', 'numpy': '2.3.5', 'pandas': '3.0.6', 'scikit_learn': '1.9.1'}
+
+1. PURPOSE AND DATA
+L3: regression; L4-5: clustering; L6: classification; L7: KNN;
+L8: trees; L9: probability (Gaussian naive Bayes); L10: neural network; L11: SVM.
+The requested 'datasheet' folder is absent; the existing dataset folder is used.
+Raw shape: [40000, 25]; usable rows: 40000.
+Exact duplicate rows removed: 0; invalid target rows removed: 0.
+Attack Type distribution: {'DDoS': 13428, 'Malware': 13307, 'Intrusion': 13265}
+Classification target: Attack Type (DDoS, Intrusion, Malware).
+Regression target: Anomaly Scores (continuous observed score, not a verified risk probability).
+Clustering: group traffic without using either target as an input.
+
+2. PREPROCESSING AND EVALUATION DESIGN
+Inputs: Packet Length, Source Port, Destination Port, Protocol, Packet Type, Traffic Type, Network Segment.
+Strip categorical whitespace; coerce invalid numeric values and infinity to missing;
+remove exact duplicate records and rows missing either target before splitting.
+Numeric: median imputation then standard scaling. Categorical: mode imputation
+then dense one-hot encoding; unseen categories are ignored at inference.
+Each pipeline fits its imputation, scaling and encoding on training rows only.
+Excluded input columns: Timestamp, Source IP Address, Destination IP Address, Payload Data, Malware Indicators, Anomaly Scores, Alerts/Warnings, Attack Type, Attack Signature, Action Taken, Severity Level, User Information, Device Information, Geo-location Data, Proxy Information, Firewall Logs, IDS/IPS Alerts, Log Source.
+Exclusions avoid post-event indicators, targets, identity fields, and unstructured text.
+70/15/15 random split stratified by Attack Type; seed=42; counts={'train': 28000, 'validation': 6000, 'test': 6000}.
+All models use the same rows. Model settings are predefined; there is no supervised
+hyperparameter search. Select models by validation macro-F1 / RMSE, including baselines.
+The test set is used for final comparison only, never for fitting or selection.
+MLP additionally uses 10% of training rows internally for early stopping.
+Linear SVM probabilities use 3-fold sigmoid calibration within training rows. They are not
+independently validated real-world risk estimates. Log loss evaluates class probabilities.
+Encoded feature count: 14.
+Missing values in the original CSV:
+  Timestamp: 0
+  Source IP Address: 0
+  Destination IP Address: 0
+  Source Port: 0
+  Destination Port: 0
+  Protocol: 0
+  Packet Length: 0
+  Packet Type: 0
+  Traffic Type: 0
+  Payload Data: 0
+  Malware Indicators: 20000
+  Anomaly Scores: 0
+  Alerts/Warnings: 20067
+  Attack Type: 0
+  Attack Signature: 0
+  Action Taken: 0
+  Severity Level: 0
+  User Information: 0
+  Device Information: 0
+  Network Segment: 0
+  Geo-location Data: 0
+  Proxy Information: 19851
+  Firewall Logs: 19961
+  IDS/IPS Alerts: 20050
+  Log Source: 0
+
+3. L6-L11 CLASSIFICATION RESULTS
+Model | Validation macro-F1 | Test accuracy | Test macro-F1 | Test log loss
+Dummy majority baseline | 0.167540 | 0.335667 | 0.167540 | 23.945000
+L6 Logistic regression | 0.326143 | 0.337167 | 0.329030 | 1.099013
+L7 KNN | 0.332616 | 0.339500 | 0.336717 | 1.245136
+L8 Decision tree | 0.343194 | 0.329000 | 0.324641 | 1.113218
+L8 Random forest | 0.333206 | 0.338000 | 0.337484 | 1.105684
+L9 Gaussian naive Bayes | 0.333194 | 0.336000 | 0.331306 | 1.100033
+L10 Neural network | 0.330532 | 0.326667 | 0.318417 | 1.102781
+L11 Linear SVM | 0.194401 | 0.333167 | 0.193705 | 1.098682
+Selected by validation macro-F1: L8 Decision tree
+Accuracy: fraction correct; macro-F1: equal weight per class; lower log loss is better.
+Logistic regression models linear class boundaries. KNN votes among 15 neighbors.
+Decision trees learn feature splits; random forest averages 100 randomized trees.
+Gaussian naive Bayes applies Bayes' rule with class-conditional Gaussian features
+and an independence assumption (approximate for one-hot features).
+The neural network uses two hidden layers (64, 32) with ReLU activations.
+Linear SVM learns a margin-based linear boundary (C=1), with 3-fold sigmoid calibration.
+The initial RBF SVM run was stopped after more than eight minutes without completing;
+it has no reported scores. Linear SVM was used for practical full-dataset training.
+The hard majority baseline assigns zero probability to other classes; its log loss
+is therefore very large after numerical clipping, even at baseline accuracy.
+
+Dummy majority baseline
+Fit time: 0.265s; artifact: ml\artifacts\course\classification_0.joblib
+Parameters: {"constant": null, "random_state": null, "strategy": "most_frequent"}
+Confusion matrix: rows=true, columns=predicted; order=['DDoS', 'Intrusion', 'Malware']
+  [2014, 0, 0]
+  [1990, 0, 0]
+  [1996, 0, 0]
+Class | Precision | Recall | F1 | Support
+DDoS | 0.335667 | 1.000000 | 0.502620 | 2014
+Intrusion | 0.000000 | 0.000000 | 0.000000 | 1990
+Malware | 0.000000 | 0.000000 | 0.000000 | 1996
+Training warnings: None
+
+L6 Logistic regression
+Fit time: 0.440s; artifact: ml\artifacts\course\classification_1.joblib
+Parameters: {"C": 1.0, "class_weight": null, "dual": false, "fit_intercept": true, "intercept_scaling": 1, "l1_ratio": 0.0, "max_iter": 1000, "n_jobs": null, "penalty": "deprecated", "random_state": 42, "solver": "lbfgs", "tol": 0.0001, "verbose": 0, "warm_start": false}
+Confusion matrix: rows=true, columns=predicted; order=['DDoS', 'Intrusion', 'Malware']
+  [950, 434, 630]
+  [900, 440, 650]
+  [953, 410, 633]
+Class | Precision | Recall | F1 | Support
+DDoS | 0.338923 | 0.471698 | 0.394436 | 2014
+Intrusion | 0.342679 | 0.221106 | 0.268784 | 1990
+Malware | 0.330894 | 0.317134 | 0.323868 | 1996
+Training warnings: None
+
+L7 KNN
+Fit time: 0.578s; artifact: ml\artifacts\course\classification_2.joblib
+Parameters: {"algorithm": "auto", "leaf_size": 30, "metric": "minkowski", "metric_params": null, "n_jobs": 1, "n_neighbors": 15, "p": 2, "weights": "uniform"}
+Confusion matrix: rows=true, columns=predicted; order=['DDoS', 'Intrusion', 'Malware']
+  [846, 633, 535]
+  [809, 644, 537]
+  [826, 623, 547]
+Class | Precision | Recall | F1 | Support
+DDoS | 0.340992 | 0.420060 | 0.376418 | 2014
+Intrusion | 0.338947 | 0.323618 | 0.331105 | 1990
+Malware | 0.337863 | 0.274048 | 0.302628 | 1996
+Training warnings: None
+
+L8 Decision tree
+Fit time: 0.634s; artifact: ml\artifacts\course\classification_3.joblib
+Parameters: {"ccp_alpha": 0.0, "class_weight": null, "criterion": "gini", "max_depth": 8, "max_features": null, "max_leaf_nodes": null, "min_impurity_decrease": 0.0, "min_samples_leaf": 20, "min_samples_split": 2, "min_weight_fraction_leaf": 0.0, "monotonic_cst": null, "random_state": 42, "splitter": "best"}
+Confusion matrix: rows=true, columns=predicted; order=['DDoS', 'Intrusion', 'Malware']
+  [610, 914, 490]
+  [621, 866, 503]
+  [618, 880, 498]
+Class | Precision | Recall | F1 | Support
+DDoS | 0.329908 | 0.302880 | 0.315817 | 2014
+Intrusion | 0.325564 | 0.435176 | 0.372473 | 1990
+Malware | 0.334004 | 0.249499 | 0.285632 | 1996
+Training warnings: None
+
+L8 Random forest
+Fit time: 7.426s; artifact: ml\artifacts\course\classification_4.joblib
+Parameters: {"bootstrap": true, "ccp_alpha": 0.0, "class_weight": null, "criterion": "gini", "max_depth": 12, "max_features": "sqrt", "max_leaf_nodes": null, "max_samples": null, "min_impurity_decrease": 0.0, "min_samples_leaf": 5, "min_samples_split": 2, "min_weight_fraction_leaf": 0.0, "monotonic_cst": null, "n_estimators": 100, "n_jobs": 1, "oob_score": false, "random_state": 42, "verbose": 0, "warm_start": false}
+Confusion matrix: rows=true, columns=predicted; order=['DDoS', 'Intrusion', 'Malware']
+  [751, 612, 651]
+  [735, 630, 625]
+  [712, 637, 647]
+Class | Precision | Recall | F1 | Support
+DDoS | 0.341674 | 0.372890 | 0.356600 | 2014
+Intrusion | 0.335285 | 0.316583 | 0.325666 | 1990
+Malware | 0.336453 | 0.324148 | 0.330186 | 1996
+Training warnings: None
+
+L9 Gaussian naive Bayes
+Fit time: 0.328s; artifact: ml\artifacts\course\classification_5.joblib
+Parameters: {"priors": null, "var_smoothing": 1e-09}
+Confusion matrix: rows=true, columns=predicted; order=['DDoS', 'Intrusion', 'Malware']
+  [897, 490, 627]
+  [831, 515, 644]
+  [900, 492, 604]
+Class | Precision | Recall | F1 | Support
+DDoS | 0.341324 | 0.445382 | 0.386471 | 2014
+Intrusion | 0.344021 | 0.258794 | 0.295383 | 1990
+Malware | 0.322133 | 0.302605 | 0.312064 | 1996
+Training warnings: None
+
+L10 Neural network
+Fit time: 8.551s; artifact: ml\artifacts\course\classification_6.joblib
+Parameters: {"activation": "relu", "alpha": 0.0001, "batch_size": "auto", "beta_1": 0.9, "beta_2": 0.999, "early_stopping": true, "epsilon": 1e-08, "hidden_layer_sizes": [64, 32], "learning_rate": "constant", "learning_rate_init": 0.001, "max_fun": 15000, "max_iter": 200, "momentum": 0.9, "n_iter_no_change": 15, "nesterovs_momentum": true, "power_t": 0.5, "random_state": 42, "shuffle": true, "solver": "adam", "tol": 0.0001, "validation_fraction": 0.1, "verbose": false, "warm_start": false}
+Confusion matrix: rows=true, columns=predicted; order=['DDoS', 'Intrusion', 'Malware']
+  [916, 436, 662]
+  [928, 412, 650]
+  [937, 427, 632]
+Class | Precision | Recall | F1 | Support
+DDoS | 0.329378 | 0.454816 | 0.382065 | 2014
+Intrusion | 0.323137 | 0.207035 | 0.252374 | 1990
+Malware | 0.325103 | 0.316633 | 0.320812 | 1996
+Training warnings: None
+
+L11 Linear SVM
+Fit time: 1.290s; artifact: ml\artifacts\course\classification_7.joblib
+Parameters: {"cv": 3, "ensemble": "auto", "estimator": "LinearSVC(dual=False, max_iter=5000, random_state=42)", "estimator__C": 1.0, "estimator__class_weight": null, "estimator__dual": false, "estimator__fit_intercept": true, "estimator__intercept_scaling": 1, "estimator__loss": "squared_hinge", "estimator__max_iter": 5000, "estimator__multi_class": "ovr", "estimator__penalty": "l2", "estimator__random_state": 42, "estimator__tol": 0.0001, "estimator__verbose": 0, "method": "sigmoid", "n_jobs": 1}
+Confusion matrix: rows=true, columns=predicted; order=['DDoS', 'Intrusion', 'Malware']
+  [1897, 0, 117]
+  [1892, 0, 98]
+  [1894, 0, 102]
+Class | Precision | Recall | F1 | Support
+DDoS | 0.333803 | 0.941907 | 0.492919 | 2014
+Intrusion | 0.000000 | 0.000000 | 0.000000 | 1990
+Malware | 0.321767 | 0.051102 | 0.088197 | 1996
+Training warnings: None
+
+4. L3 REGRESSION RESULTS
+Model | Validation RMSE | Test MAE | Test RMSE | Test R2
+Dummy mean baseline | 28.743128 | 25.221270 | 29.065570 | -0.000609
+L3 Linear regression | 28.749714 | 25.214267 | 29.063229 | -0.000448
+L3 Ridge regression | 28.749713 | 25.214267 | 29.063229 | -0.000448
+L3 Decision tree regression | 29.033766 | 25.299232 | 29.246354 | -0.013095
+Selected by validation RMSE: Dummy mean baseline
+MAE/RMSE use anomaly-score units; lower is better. R2=0 is the test-mean reference;
+negative R2 means worse than predicting the test-set mean.
+Linear regression minimizes squared error; ridge adds L2 regularization (alpha=1).
+The regression tree uses max_depth=8 and min_samples_leaf=20.
+
+5. L4-5 CLUSTERING RESULTS
+KMeans fits training inputs with k=2..6, n_init=10. Choose k by validation silhouette.
+Silhouette uses a reproducible sample of up to 2,000 validation/test rows.
+k | Validation silhouette | Training inertia
+2 | 0.124386 | 132923.129282
+3 | 0.113023 | 119961.296768
+4 | 0.114406 | 109885.831347
+5 | 0.104746 | 103505.251626
+6 | 0.113251 | 97736.156296
+Selected k: 2
+{
+  "silhouette": 0.13171840056547274,
+  "davies_bouldin": 2.462629342393894,
+  "adjusted_rand_vs_attack_type": -0.00014093824354692388,
+  "normalized_mutual_information_vs_attack_type": 6.829072499477587e-05,
+  "cluster_sizes": {
+    "0": 3024,
+    "1": 2976
+  },
+  "cluster_feature_means": {
+    "0": {
+      "Packet Length": 411.0625,
+      "Source Port": 32792.847552910054,
+      "Destination Port": 33063.601851851854
+    },
+    "1": {
+      "Packet Length": 1140.9361559139784,
+      "Source Port": 33825.8373655914,
+      "Destination Port": 32976.57930107527
+    }
+  },
+  "cluster_attack_counts": {
+    "0": {
+      "DDoS": 1001,
+      "Intrusion": 1004,
+      "Malware": 1019
+    },
+    "1": {
+      "DDoS": 1013,
+      "Intrusion": 986,
+      "Malware": 977
+    }
+  }
+}
+Higher silhouette and lower Davies-Bouldin indicate better geometric separation.
+ARI/NMI compare clusters with attack labels only after fitting; those labels never
+drive clustering. ARI near zero indicates chance-level agreement.
+One-hot feature geometry affects clusters; geometric groups need not be attack groups.
+
+6. INTERPRETATION AND LIMITATIONS
+Validation-selected classifier test accuracy=0.329000, macro-F1=0.324641.
+Majority baseline test accuracy=0.335667, macro-F1=0.167540.
+Validation-selected regressor test RMSE=29.065570; mean baseline=29.065570.
+Small metric differences from a single split do not establish reliable improvement.
+Poor performance is a valid result: these inputs may contain little information about
+the labels. This experiment cannot establish the dataset's provenance or realism.
+Only three attack classes occur; no benign class is available. These models classify
+among known attack categories and cannot establish attack-versus-benign detection.
+A random split measures within-dataset generalization, not future deployment or transfer
+to other networks. No temporal/group holdout or confidence intervals were evaluated.
+The seven-feature baseline intentionally omits text/identity and event-response fields.
+Results apply to this feature policy and model settings, not all possible predictors.
+These results are measured by this script. Existing docs/evaluation.md contains other
+claims which this experiment does not reproduce or validate.
+
+7. REPRODUCTION AND OUTPUTS
+Run from the project root: python ml/src/course_experiments.py
+Optional input: --data path/to/cybersecurity_attacks.csv
+Install dependencies: python -m pip install -r ml/requirements.txt
+Detailed metrics, estimator parameters and versions: ml/reports/course_experiments.json
+Fitted preprocessing + estimator pipelines: ml/artifacts/course/*.joblib
+Original CSV row indices for all partitions: ml/artifacts/course/split_indices.json
+Models are fitted on training rows only; no production service is changed by this run.
+Total execution time: 47.970 seconds.
