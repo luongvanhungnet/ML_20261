@@ -1,0 +1,53 @@
+{
+  "mapped_class_counts": {
+    "DDoS": 128027,
+    "Malware": 1966,
+    "Intrusion": 2216
+  },
+  "exact_duplicate_rows_removed": 1513,
+  "conflicting_rows_removed_after_deduplication": 0,
+  "class_counts_after_cleaning": {
+    "DDoS": 127188,
+    "Malware": 1383,
+    "Intrusion": 2125
+  },
+  "selected_class_counts": {
+    "DDoS": 127188,
+    "Malware": 1383,
+    "Intrusion": 2125
+  },
+  "numeric_features": [
+    "Flow Duration",
+    "Total Fwd Packets",
+    "Total Backward Packets",
+    "Total Length of Fwd Packets",
+    "Total Length of Bwd Packets",
+    "Fwd Packet Length Mean",
+    "Bwd Packet Length Mean",
+    "Flow IAT Mean"
+  ],
+  "categorical_features": [
+    "Destination Port Group"
+  ],
+  "split_seed": 42,
+  "cv_seeds": [
+    42,
+    43,
+    44
+  ],
+  "folds_per_seed": 5,
+  "split_ratios": {
+    "train": 0.7,
+    "validation": 0.1,
+    "test": 0.2
+  },
+  "split_sizes": {
+    "train": 91486,
+    "validation": 13070,
+    "test": 26140,
+    "tuning": 91486
+  },
+  "sampling": "all_cleaned",
+  "validation_only": false,
+  "scikit_learn": "1.9.1"
+}
