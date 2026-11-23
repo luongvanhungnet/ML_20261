@@ -1,0 +1,55 @@
+{
+  "mapped_class_counts": {
+    "DDoS": 13428,
+    "Malware": 13307,
+    "Intrusion": 13265
+  },
+  "exact_duplicate_rows_removed": 1,
+  "conflicting_rows_removed_after_deduplication": 2,
+  "class_counts_after_cleaning": {
+    "DDoS": 13427,
+    "Malware": 13306,
+    "Intrusion": 13264
+  },
+  "selected_class_counts": {
+    "DDoS": 13427,
+    "Malware": 13306,
+    "Intrusion": 13264
+  },
+  "numeric_features": [
+    "Packet Length",
+    "Hour",
+    "Day of Week"
+  ],
+  "categorical_features": [
+    "Protocol",
+    "Packet Type",
+    "Traffic Type",
+    "Network Segment",
+    "Source Port Group",
+    "Destination Port Group",
+    "OS",
+    "Browser"
+  ],
+  "split_seed": 42,
+  "cv_seeds": [
+    42,
+    43,
+    44
+  ],
+  "folds_per_seed": 5,
+  "split_ratios": {
+    "train": 0.7,
+    "validation": 0.1,
+    "test": 0.2
+  },
+  "split_sizes": {
+    "train": 27997,
+    "validation": 4000,
+    "test": 8000,
+    "tuning": 27997
+  },
+  "sampling": "all_cleaned",
+  "validation_only": false,
+  "scikit_learn": "1.9.1"
+}
