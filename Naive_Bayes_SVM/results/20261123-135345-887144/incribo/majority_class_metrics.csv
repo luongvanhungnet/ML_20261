@@ -1,0 +1,4 @@
+label,precision,recall,f1-score,support
+DDoS,0.33575,1.0,0.5027138311809844,2686.0
+Malware,0.0,0.0,0.0,2661.0
+Intrusion,0.0,0.0,0.0,2653.0
