@@ -1,0 +1,10 @@
+# Local datasets
+/KNN_Kmeans/dataset/*
+!/KNN_Kmeans/dataset/README.md
+/Decision_Tree/data/
+/Logistic_Regression/archive/*
+!/Logistic_Regression/archive/README.md
+/Naive_Bayes_SVM/data/
+
+# Local environment files
+.env

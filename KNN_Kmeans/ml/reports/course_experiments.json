@@ -1,0 +1,1404 @@
+{
+  "generated_utc": "2026-11-16T07:31:22.079108+00:00",
+  "dataset": "dataset\\cybersecurity_attacks.csv",
+  "sha256": "7035d0e7f38f1217a76842209da2f8d47ef54c67f55519ade56f53be64c72d24",
+  "versions": {
+    "python": "3.11.0",
+    "numpy": "2.3.5",
+    "pandas": "3.0.6",
+    "scikit_learn": "1.9.1"
+  },
+  "seed": 42,
+  "raw_shape": [
+    40000,
+    25
+  ],
+  "clean_rows": 40000,
+  "duplicate_rows_removed": 0,
+  "invalid_target_rows_removed": 0,
+  "missing_by_column": {
+    "Timestamp": 0,
+    "Source IP Address": 0,
+    "Destination IP Address": 0,
+    "Source Port": 0,
+    "Destination Port": 0,
+    "Protocol": 0,
+    "Packet Length": 0,
+    "Packet Type": 0,
+    "Traffic Type": 0,
+    "Payload Data": 0,
+    "Malware Indicators": 20000,
+    "Anomaly Scores": 0,
+    "Alerts/Warnings": 20067,
+    "Attack Type": 0,
+    "Attack Signature": 0,
+    "Action Taken": 0,
+    "Severity Level": 0,
+    "User Information": 0,
+    "Device Information": 0,
+    "Network Segment": 0,
+    "Geo-location Data": 0,
+    "Proxy Information": 19851,
+    "Firewall Logs": 19961,
+    "IDS/IPS Alerts": 20050,
+    "Log Source": 0
+  },
+  "class_counts": {
+    "DDoS": 13428,
+    "Malware": 13307,
+    "Intrusion": 13265
+  },
+  "features": [
+    "Packet Length",
+    "Source Port",
+    "Destination Port",
+    "Protocol",
+    "Packet Type",
+    "Traffic Type",
+    "Network Segment"
+  ],
+  "excluded_columns": [
+    "Timestamp",
+    "Source IP Address",
+    "Destination IP Address",
+    "Payload Data",
+    "Malware Indicators",
+    "Anomaly Scores",
+    "Alerts/Warnings",
+    "Attack Type",
+    "Attack Signature",
+    "Action Taken",
+    "Severity Level",
+    "User Information",
+    "Device Information",
+    "Geo-location Data",
+    "Proxy Information",
+    "Firewall Logs",
+    "IDS/IPS Alerts",
+    "Log Source"
+  ],
+  "split_sizes": {
+    "train": 28000,
+    "validation": 6000,
+    "test": 6000
+  },
+  "classification": {
+    "Dummy majority baseline": {
+      "fit_seconds": 0.26527039997745305,
+      "parameters": {
+        "constant": null,
+        "random_state": null,
+        "strategy": "most_frequent"
+      },
+      "warnings": [],
+      "validation": {
+        "accuracy": 0.33566666666666667,
+        "macro_f1": 0.1675401380916729,
+        "weighted_f1": 0.1687129190583146,
+        "log_loss": 23.945000401503492,
+        "class_order": [
+          "DDoS",
+          "Intrusion",
+          "Malware"
+        ],
+        "confusion_matrix": [
+          [
+            2014,
+            0,
+            0
+          ],
+          [
+            1990,
+            0,
+            0
+          ],
+          [
+            1996,
+            0,
+            0
+          ]
+        ],
+        "per_class": {
+          "DDoS": {
+            "precision": 0.33566666666666667,
+            "recall": 1.0,
+            "f1-score": 0.5026204142750187,
+            "support": 2014.0
+          },
+          "Intrusion": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1-score": 0.0,
+            "support": 1990.0
+          },
+          "Malware": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1-score": 0.0,
+            "support": 1996.0
+          },
+          "accuracy": 0.33566666666666667,
+          "macro avg": {
+            "precision": 0.11188888888888888,
+            "recall": 0.3333333333333333,
+            "f1-score": 0.1675401380916729,
+            "support": 6000.0
+          },
+          "weighted avg": {
+            "precision": 0.1126721111111111,
+            "recall": 0.33566666666666667,
+            "f1-score": 0.1687129190583146,
+            "support": 6000.0
+          }
+        }
+      },
+      "test": {
+        "accuracy": 0.33566666666666667,
+        "macro_f1": 0.1675401380916729,
+        "weighted_f1": 0.1687129190583146,
+        "log_loss": 23.94500040150349,
+        "class_order": [
+          "DDoS",
+          "Intrusion",
+          "Malware"
+        ],
+        "confusion_matrix": [
+          [
+            2014,
+            0,
+            0
+          ],
+          [
+            1990,
+            0,
+            0
+          ],
+          [
+            1996,
+            0,
+            0
+          ]
+        ],
+        "per_class": {
+          "DDoS": {
+            "precision": 0.33566666666666667,
+            "recall": 1.0,
+            "f1-score": 0.5026204142750187,
+            "support": 2014.0
+          },
+          "Intrusion": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1-score": 0.0,
+            "support": 1990.0
+          },
+          "Malware": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1-score": 0.0,
+            "support": 1996.0
+          },
+          "accuracy": 0.33566666666666667,
+          "macro avg": {
+            "precision": 0.11188888888888888,
+            "recall": 0.3333333333333333,
+            "f1-score": 0.1675401380916729,
+            "support": 6000.0
+          },
+          "weighted avg": {
+            "precision": 0.1126721111111111,
+            "recall": 0.33566666666666667,
+            "f1-score": 0.1687129190583146,
+            "support": 6000.0
+          }
+        }
+      },
+      "artifact": "ml\\artifacts\\course\\classification_0.joblib"
+    },
+    "L6 Logistic regression": {
+      "fit_seconds": 0.43954029999440536,
+      "parameters": {
+        "C": 1.0,
+        "class_weight": null,
+        "dual": false,
+        "fit_intercept": true,
+        "intercept_scaling": 1,
+        "l1_ratio": 0.0,
+        "max_iter": 1000,
+        "n_jobs": null,
+        "penalty": "deprecated",
+        "random_state": 42,
+        "solver": "lbfgs",
+        "tol": 0.0001,
+        "verbose": 0,
+        "warm_start": false
+      },
+      "warnings": [],
+      "validation": {
+        "accuracy": 0.3348333333333333,
+        "macro_f1": 0.3261431719500963,
+        "weighted_f1": 0.32641117943437326,
+        "log_loss": 1.0989989686247812,
+        "class_order": [
+          "DDoS",
+          "Intrusion",
+          "Malware"
+        ],
+        "confusion_matrix": [
+          [
+            949,
+            437,
+            628
+          ],
+          [
+            946,
+            423,
+            621
+          ],
+          [
+            925,
+            434,
+            637
+          ]
+        ],
+        "per_class": {
+          "DDoS": {
+            "precision": 0.3365248226950355,
+            "recall": 0.471201588877855,
+            "f1-score": 0.39263549855192387,
+            "support": 2014.0
+          },
+          "Intrusion": {
+            "precision": 0.3268933539412674,
+            "recall": 0.21256281407035177,
+            "f1-score": 0.25761266747868455,
+            "support": 1990.0
+          },
+          "Malware": {
+            "precision": 0.33775185577942735,
+            "recall": 0.3191382765531062,
+            "f1-score": 0.32818134981968056,
+            "support": 1996.0
+          },
+          "accuracy": 0.3348333333333333,
+          "macro avg": {
+            "precision": 0.33372334413857674,
+            "recall": 0.3343008931671044,
+            "f1-score": 0.3261431719500963,
+            "support": 6000.0
+          },
+          "weighted avg": {
+            "precision": 0.3337385785644434,
+            "recall": 0.3348333333333333,
+            "f1-score": 0.32641117943437326,
+            "support": 6000.0
+          }
+        }
+      },
+      "test": {
+        "accuracy": 0.33716666666666667,
+        "macro_f1": 0.3290295765842291,
+        "weighted_f1": 0.3292860421829797,
+        "log_loss": 1.0990134609209685,
+        "class_order": [
+          "DDoS",
+          "Intrusion",
+          "Malware"
+        ],
+        "confusion_matrix": [
+          [
+            950,
+            434,
+            630
+          ],
+          [
+            900,
+            440,
+            650
+          ],
+          [
+            953,
+            410,
+            633
+          ]
+        ],
+        "per_class": {
+          "DDoS": {
+            "precision": 0.3389225829468427,
+            "recall": 0.4716981132075472,
+            "f1-score": 0.3944363711853851,
+            "support": 2014.0
+          },
+          "Intrusion": {
+            "precision": 0.3426791277258567,
+            "recall": 0.22110552763819097,
+            "f1-score": 0.2687843616371411,
+            "support": 1990.0
+          },
+          "Malware": {
+            "precision": 0.330893883951908,
+            "recall": 0.31713426853707416,
+            "f1-score": 0.32386799693016116,
+            "support": 1996.0
+          },
+          "accuracy": 0.33716666666666667,
+          "macro avg": {
+            "precision": 0.33749853154153575,
+            "recall": 0.33664596979427075,
+            "f1-score": 0.3290295765842291,
+            "support": 6000.0
+          },
+          "weighted avg": {
+            "precision": 0.3374976230995674,
+            "recall": 0.33716666666666667,
+            "f1-score": 0.3292860421829797,
+            "support": 6000.0
+          }
+        }
+      },
+      "artifact": "ml\\artifacts\\course\\classification_1.joblib",
+      "iterations": [
+        5
+      ]
+    },
+    "L7 KNN": {
+      "fit_seconds": 0.5778781999833882,
+      "parameters": {
+        "algorithm": "auto",
+        "leaf_size": 30,
+        "metric": "minkowski",
+        "metric_params": null,
+        "n_jobs": 1,
+        "n_neighbors": 15,
+        "p": 2,
+        "weights": "uniform"
+      },
+      "warnings": [],
+      "validation": {
+        "accuracy": 0.33516666666666667,
+        "macro_f1": 0.332616129141524,
+        "weighted_f1": 0.3327537077317545,
+        "log_loss": 1.231750063539114,
+        "class_order": [
+          "DDoS",
+          "Intrusion",
+          "Malware"
+        ],
+        "confusion_matrix": [
+          [
+            835,
+            644,
+            535
+          ],
+          [
+            798,
+            620,
+            572
+          ],
+          [
+            816,
+            624,
+            556
+          ]
+        ],
+        "per_class": {
+          "DDoS": {
+            "precision": 0.34095549203756637,
+            "recall": 0.41459781529294937,
+            "f1-score": 0.37418776607663007,
+            "support": 2014.0
+          },
+          "Intrusion": {
+            "precision": 0.3283898305084746,
+            "recall": 0.31155778894472363,
+            "f1-score": 0.31975244971634864,
+            "support": 1990.0
+          },
+          "Malware": {
+            "precision": 0.3343355381840048,
+            "recall": 0.2785571142284569,
+            "f1-score": 0.30390817163159334,
+            "support": 1996.0
+          },
+          "accuracy": 0.33516666666666667,
+          "macro avg": {
+            "precision": 0.33456028691001527,
+            "recall": 0.33490423948871,
+            "f1-score": 0.332616129141524,
+            "support": 6000.0
+          },
+          "weighted avg": {
+            "precision": 0.33458564298179944,
+            "recall": 0.33516666666666667,
+            "f1-score": 0.3327537077317545,
+            "support": 6000.0
+          }
+        }
+      },
+      "test": {
+        "accuracy": 0.3395,
+        "macro_f1": 0.336717193363901,
+        "weighted_f1": 0.33684190830619054,
+        "log_loss": 1.2451355415656633,
+        "class_order": [
+          "DDoS",
+          "Intrusion",
+          "Malware"
+        ],
+        "confusion_matrix": [
+          [
+            846,
+            633,
+            535
+          ],
+          [
+            809,
+            644,
+            537
+          ],
+          [
+            826,
+            623,
+            547
+          ]
+        ],
+        "per_class": {
+          "DDoS": {
+            "precision": 0.34099153567110035,
+            "recall": 0.4200595829195631,
+            "f1-score": 0.3764182424916574,
+            "support": 2014.0
+          },
+          "Intrusion": {
+            "precision": 0.3389473684210526,
+            "recall": 0.3236180904522613,
+            "f1-score": 0.3311053984575835,
+            "support": 1990.0
+          },
+          "Malware": {
+            "precision": 0.3378628783199506,
+            "recall": 0.2740480961923848,
+            "f1-score": 0.30262793914246194,
+            "support": 1996.0
+          },
+          "accuracy": 0.3395,
+          "macro avg": {
+            "precision": 0.3392672608040345,
+            "recall": 0.3392419231880697,
+            "f1-score": 0.336717193363901,
+            "support": 6000.0
+          },
+          "weighted avg": {
+            "precision": 0.3392727535210187,
+            "recall": 0.3395,
+            "f1-score": 0.33684190830619054,
+            "support": 6000.0
+          }
+        }
+      },
+      "artifact": "ml\\artifacts\\course\\classification_2.joblib"
+    },
+    "L8 Decision tree": {
+      "fit_seconds": 0.6335719000198878,
+      "parameters": {
+        "ccp_alpha": 0.0,
+        "class_weight": null,
+        "criterion": "gini",
+        "max_depth": 8,
+        "max_features": null,
+        "max_leaf_nodes": null,
+        "min_impurity_decrease": 0.0,
+        "min_samples_leaf": 20,
+        "min_samples_split": 2,
+        "min_weight_fraction_leaf": 0.0,
+        "monotonic_cst": null,
+        "random_state": 42,
+        "splitter": "best"
+      },
+      "warnings": [],
+      "validation": {
+        "accuracy": 0.3466666666666667,
+        "macro_f1": 0.34319378699685416,
+        "weighted_f1": 0.34307915163032865,
+        "log_loss": 1.1104035975672129,
+        "class_order": [
+          "DDoS",
+          "Intrusion",
+          "Malware"
+        ],
+        "confusion_matrix": [
+          [
+            615,
+            849,
+            550
+          ],
+          [
+            596,
+            894,
+            500
+          ],
+          [
+            602,
+            823,
+            571
+          ]
+        ],
+        "per_class": {
+          "DDoS": {
+            "precision": 0.33921676778819637,
+            "recall": 0.30536246276067525,
+            "f1-score": 0.3214005748628168,
+            "support": 2014.0
+          },
+          "Intrusion": {
+            "precision": 0.34840218238503506,
+            "recall": 0.4492462311557789,
+            "f1-score": 0.3924495171202809,
+            "support": 1990.0
+          },
+          "Malware": {
+            "precision": 0.35225169648365207,
+            "recall": 0.28607214428857713,
+            "f1-score": 0.31573126900746473,
+            "support": 1996.0
+          },
+          "accuracy": 0.3466666666666667,
+          "macro avg": {
+            "precision": 0.3466235488856279,
+            "recall": 0.3468936127350104,
+            "f1-score": 0.34319378699685416,
+            "support": 6000.0
+          },
+          "weighted avg": {
+            "precision": 0.3465995499088361,
+            "recall": 0.3466666666666667,
+            "f1-score": 0.34307915163032865,
+            "support": 6000.0
+          }
+        }
+      },
+      "test": {
+        "accuracy": 0.329,
+        "macro_f1": 0.3246407299192458,
+        "weighted_f1": 0.32456642550939074,
+        "log_loss": 1.1132182580031413,
+        "class_order": [
+          "DDoS",
+          "Intrusion",
+          "Malware"
+        ],
+        "confusion_matrix": [
+          [
+            610,
+            914,
+            490
+          ],
+          [
+            621,
+            866,
+            503
+          ],
+          [
+            618,
+            880,
+            498
+          ]
+        ],
+        "per_class": {
+          "DDoS": {
+            "precision": 0.3299080584099513,
+            "recall": 0.3028798411122145,
+            "f1-score": 0.31581672275433603,
+            "support": 2014.0
+          },
+          "Intrusion": {
+            "precision": 0.3255639097744361,
+            "recall": 0.43517587939698493,
+            "f1-score": 0.3724731182795699,
+            "support": 1990.0
+          },
+          "Malware": {
+            "precision": 0.33400402414486924,
+            "recall": 0.24949899799599198,
+            "f1-score": 0.28563234872383136,
+            "support": 1996.0
+          },
+          "accuracy": 0.329,
+          "macro avg": {
+            "precision": 0.3298253307764189,
+            "recall": 0.32918490616839713,
+            "f1-score": 0.3246407299192458,
+            "support": 6000.0
+          },
+          "weighted avg": {
+            "precision": 0.3298298403803215,
+            "recall": 0.329,
+            "f1-score": 0.32456642550939074,
+            "support": 6000.0
+          }
+        }
+      },
+      "artifact": "ml\\artifacts\\course\\classification_3.joblib"
+    },
+    "L8 Random forest": {
+      "fit_seconds": 7.426010900002439,
+      "parameters": {
+        "bootstrap": true,
+        "ccp_alpha": 0.0,
+        "class_weight": null,
+        "criterion": "gini",
+        "max_depth": 12,
+        "max_features": "sqrt",
+        "max_leaf_nodes": null,
+        "max_samples": null,
+        "min_impurity_decrease": 0.0,
+        "min_samples_leaf": 5,
+        "min_samples_split": 2,
+        "min_weight_fraction_leaf": 0.0,
+        "monotonic_cst": null,
+        "n_estimators": 100,
+        "n_jobs": 1,
+        "oob_score": false,
+        "random_state": 42,
+        "verbose": 0,
+        "warm_start": false
+      },
+      "warnings": [],
+      "validation": {
+        "accuracy": 0.33366666666666667,
+        "macro_f1": 0.333205997069135,
+        "weighted_f1": 0.3332767533405566,
+        "log_loss": 1.1049738824638746,
+        "class_order": [
+          "DDoS",
+          "Intrusion",
+          "Malware"
+        ],
+        "confusion_matrix": [
+          [
+            738,
+            637,
+            639
+          ],
+          [
+            719,
+            623,
+            648
+          ],
+          [
+            716,
+            639,
+            641
+          ]
+        ],
+        "per_class": {
+          "DDoS": {
+            "precision": 0.33962264150943394,
+            "recall": 0.36643495531281034,
+            "f1-score": 0.35251970384523523,
+            "support": 2014.0
+          },
+          "Intrusion": {
+            "precision": 0.3280674038967878,
+            "recall": 0.31306532663316583,
+            "f1-score": 0.3203908459758293,
+            "support": 1990.0
+          },
+          "Malware": {
+            "precision": 0.3324688796680498,
+            "recall": 0.3211422845691383,
+            "f1-score": 0.32670744138634045,
+            "support": 1996.0
+          },
+          "accuracy": 0.33366666666666667,
+          "macro avg": {
+            "precision": 0.3333863083580905,
+            "recall": 0.3335475221717048,
+            "f1-score": 0.333205997069135,
+            "support": 6000.0
+          },
+          "weighted avg": {
+            "precision": 0.33341033626200584,
+            "recall": 0.33366666666666667,
+            "f1-score": 0.3332767533405566,
+            "support": 6000.0
+          }
+        }
+      },
+      "test": {
+        "accuracy": 0.338,
+        "macro_f1": 0.33748400286485686,
+        "weighted_f1": 0.3375531698822748,
+        "log_loss": 1.105683668039259,
+        "class_order": [
+          "DDoS",
+          "Intrusion",
+          "Malware"
+        ],
+        "confusion_matrix": [
+          [
+            751,
+            612,
+            651
+          ],
+          [
+            735,
+            630,
+            625
+          ],
+          [
+            712,
+            637,
+            647
+          ]
+        ],
+        "per_class": {
+          "DDoS": {
+            "precision": 0.3416742493175614,
+            "recall": 0.3728897715988083,
+            "f1-score": 0.35660018993352327,
+            "support": 2014.0
+          },
+          "Intrusion": {
+            "precision": 0.33528472591804154,
+            "recall": 0.3165829145728643,
+            "f1-score": 0.3256655466528819,
+            "support": 1990.0
+          },
+          "Malware": {
+            "precision": 0.33645345813832556,
+            "recall": 0.3241482965931864,
+            "f1-score": 0.33018627200816536,
+            "support": 1996.0
+          },
+          "accuracy": 0.338,
+          "macro avg": {
+            "precision": 0.3378041444579762,
+            "recall": 0.3378736609216197,
+            "f1-score": 0.33748400286485686,
+            "support": 6000.0
+          },
+          "weighted avg": {
+            "precision": 0.3378182741910949,
+            "recall": 0.338,
+            "f1-score": 0.3375531698822748,
+            "support": 6000.0
+          }
+        }
+      },
+      "artifact": "ml\\artifacts\\course\\classification_4.joblib"
+    },
+    "L9 Gaussian naive Bayes": {
+      "fit_seconds": 0.3281282000243664,
+      "parameters": {
+        "priors": null,
+        "var_smoothing": 1e-09
+      },
+      "warnings": [],
+      "validation": {
+        "accuracy": 0.33866666666666667,
+        "macro_f1": 0.3331944064947184,
+        "weighted_f1": 0.3334000754277802,
+        "log_loss": 1.0995351835970797,
+        "class_order": [
+          "DDoS",
+          "Intrusion",
+          "Malware"
+        ],
+        "confusion_matrix": [
+          [
+            897,
+            494,
+            623
+          ],
+          [
+            896,
+            475,
+            619
+          ],
+          [
+            874,
+            462,
+            660
+          ]
+        ],
+        "per_class": {
+          "DDoS": {
+            "precision": 0.3363329583802025,
+            "recall": 0.44538232373386294,
+            "f1-score": 0.38325144199957273,
+            "support": 2014.0
+          },
+          "Intrusion": {
+            "precision": 0.33193570929419985,
+            "recall": 0.23869346733668342,
+            "f1-score": 0.2776965799473838,
+            "support": 1990.0
+          },
+          "Malware": {
+            "precision": 0.3470031545741325,
+            "recall": 0.3306613226452906,
+            "f1-score": 0.33863519753719856,
+            "support": 1996.0
+          },
+          "accuracy": 0.33866666666666667,
+          "macro avg": {
+            "precision": 0.3384239407495116,
+            "recall": 0.33824570457194564,
+            "f1-score": 0.3331944064947184,
+            "support": 6000.0
+          },
+          "weighted avg": {
+            "precision": 0.338424156033859,
+            "recall": 0.33866666666666667,
+            "f1-score": 0.3334000754277802,
+            "support": 6000.0
+          }
+        }
+      },
+      "test": {
+        "accuracy": 0.336,
+        "macro_f1": 0.33130608842577897,
+        "weighted_f1": 0.3315075074440094,
+        "log_loss": 1.100033109088546,
+        "class_order": [
+          "DDoS",
+          "Intrusion",
+          "Malware"
+        ],
+        "confusion_matrix": [
+          [
+            897,
+            490,
+            627
+          ],
+          [
+            831,
+            515,
+            644
+          ],
+          [
+            900,
+            492,
+            604
+          ]
+        ],
+        "per_class": {
+          "DDoS": {
+            "precision": 0.341324200913242,
+            "recall": 0.44538232373386294,
+            "f1-score": 0.3864713485566566,
+            "support": 2014.0
+          },
+          "Intrusion": {
+            "precision": 0.3440213760855043,
+            "recall": 0.25879396984924624,
+            "f1-score": 0.2953828505878979,
+            "support": 1990.0
+          },
+          "Malware": {
+            "precision": 0.3221333333333333,
+            "recall": 0.3026052104208417,
+            "f1-score": 0.3120640661327822,
+            "support": 1996.0
+          },
+          "accuracy": 0.336,
+          "macro avg": {
+            "precision": 0.33582630344402653,
+            "recall": 0.33559383466798365,
+            "f1-score": 0.33130608842577897,
+            "support": 6000.0
+          },
+          "weighted avg": {
+            "precision": 0.33583460206379273,
+            "recall": 0.336,
+            "f1-score": 0.3315075074440094,
+            "support": 6000.0
+          }
+        }
+      },
+      "artifact": "ml\\artifacts\\course\\classification_5.joblib"
+    },
+    "L10 Neural network": {
+      "fit_seconds": 8.550760299956892,
+      "parameters": {
+        "activation": "relu",
+        "alpha": 0.0001,
+        "batch_size": "auto",
+        "beta_1": 0.9,
+        "beta_2": 0.999,
+        "early_stopping": true,
+        "epsilon": 1e-08,
+        "hidden_layer_sizes": [
+          64,
+          32
+        ],
+        "learning_rate": "constant",
+        "learning_rate_init": 0.001,
+        "max_fun": 15000,
+        "max_iter": 200,
+        "momentum": 0.9,
+        "n_iter_no_change": 15,
+        "nesterovs_momentum": true,
+        "power_t": 0.5,
+        "random_state": 42,
+        "shuffle": true,
+        "solver": "adam",
+        "tol": 0.0001,
+        "validation_fraction": 0.1,
+        "verbose": false,
+        "warm_start": false
+      },
+      "warnings": [],
+      "validation": {
+        "accuracy": 0.3395,
+        "macro_f1": 0.33053166086008234,
+        "weighted_f1": 0.3308008204302617,
+        "log_loss": 1.1026565846422034,
+        "class_order": [
+          "DDoS",
+          "Intrusion",
+          "Malware"
+        ],
+        "confusion_matrix": [
+          [
+            941,
+            386,
+            687
+          ],
+          [
+            929,
+            412,
+            649
+          ],
+          [
+            877,
+            435,
+            684
+          ]
+        ],
+        "per_class": {
+          "DDoS": {
+            "precision": 0.3425555151073899,
+            "recall": 0.4672293942403178,
+            "f1-score": 0.39529510607015333,
+            "support": 2014.0
+          },
+          "Intrusion": {
+            "precision": 0.33414436334144365,
+            "recall": 0.207035175879397,
+            "f1-score": 0.2556624263108905,
+            "support": 1990.0
+          },
+          "Malware": {
+            "precision": 0.33861386138613864,
+            "recall": 0.342685370741483,
+            "f1-score": 0.34063745019920316,
+            "support": 1996.0
+          },
+          "accuracy": 0.3395,
+          "macro avg": {
+            "precision": 0.3384379132783241,
+            "recall": 0.33898331362039924,
+            "f1-score": 0.33053166086008234,
+            "support": 6000.0
+          },
+          "weighted avg": {
+            "precision": 0.33845455963374815,
+            "recall": 0.3395,
+            "f1-score": 0.3308008204302617,
+            "support": 6000.0
+          }
+        }
+      },
+      "test": {
+        "accuracy": 0.32666666666666666,
+        "macro_f1": 0.3184168311498447,
+        "weighted_f1": 0.31867381777954773,
+        "log_loss": 1.1027805497384777,
+        "class_order": [
+          "DDoS",
+          "Intrusion",
+          "Malware"
+        ],
+        "confusion_matrix": [
+          [
+            916,
+            436,
+            662
+          ],
+          [
+            928,
+            412,
+            650
+          ],
+          [
+            937,
+            427,
+            632
+          ]
+        ],
+        "per_class": {
+          "DDoS": {
+            "precision": 0.3293779216109313,
+            "recall": 0.4548162859980139,
+            "f1-score": 0.3820646506777894,
+            "support": 2014.0
+          },
+          "Intrusion": {
+            "precision": 0.32313725490196077,
+            "recall": 0.207035175879397,
+            "f1-score": 0.2523736600306279,
+            "support": 1990.0
+          },
+          "Malware": {
+            "precision": 0.32510288065843623,
+            "recall": 0.3166332665330661,
+            "f1-score": 0.3208121827411167,
+            "support": 1996.0
+          },
+          "accuracy": 0.32666666666666666,
+          "macro avg": {
+            "precision": 0.3258726857237761,
+            "recall": 0.32616157613682567,
+            "f1-score": 0.3184168311498447,
+            "support": 6000.0
+          },
+          "weighted avg": {
+            "precision": 0.32588593686225936,
+            "recall": 0.32666666666666666,
+            "f1-score": 0.31867381777954773,
+            "support": 6000.0
+          }
+        }
+      },
+      "artifact": "ml\\artifacts\\course\\classification_6.joblib",
+      "iterations": 24
+    },
+    "L11 Linear SVM": {
+      "fit_seconds": 1.2901717000058852,
+      "parameters": {
+        "cv": 3,
+        "ensemble": "auto",
+        "estimator__C": 1.0,
+        "estimator__class_weight": null,
+        "estimator__dual": false,
+        "estimator__fit_intercept": true,
+        "estimator__intercept_scaling": 1,
+        "estimator__loss": "squared_hinge",
+        "estimator__max_iter": 5000,
+        "estimator__multi_class": "ovr",
+        "estimator__penalty": "l2",
+        "estimator__random_state": 42,
+        "estimator__tol": 0.0001,
+        "estimator__verbose": 0,
+        "estimator": "LinearSVC(dual=False, max_iter=5000, random_state=42)",
+        "method": "sigmoid",
+        "n_jobs": 1
+      },
+      "warnings": [],
+      "validation": {
+        "accuracy": 0.3338333333333333,
+        "macro_f1": 0.19440122794468287,
+        "weighted_f1": 0.19549680048879353,
+        "log_loss": 1.0985549389342673,
+        "class_order": [
+          "DDoS",
+          "Intrusion",
+          "Malware"
+        ],
+        "confusion_matrix": [
+          [
+            1900,
+            0,
+            114
+          ],
+          [
+            1873,
+            0,
+            117
+          ],
+          [
+            1893,
+            0,
+            103
+          ]
+        ],
+        "per_class": {
+          "DDoS": {
+            "precision": 0.3353335686551359,
+            "recall": 0.9433962264150944,
+            "f1-score": 0.4947916666666667,
+            "support": 2014.0
+          },
+          "Intrusion": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1-score": 0.0,
+            "support": 1990.0
+          },
+          "Malware": {
+            "precision": 0.3083832335329341,
+            "recall": 0.051603206412825654,
+            "f1-score": 0.08841201716738198,
+            "support": 1996.0
+          },
+          "accuracy": 0.3338333333333333,
+          "macro avg": {
+            "precision": 0.21457226739602334,
+            "recall": 0.3316664776093067,
+            "f1-score": 0.19440122794468287,
+            "support": 6000.0
+          },
+          "weighted avg": {
+            "precision": 0.2151491235671967,
+            "recall": 0.3338333333333333,
+            "f1-score": 0.19549680048879353,
+            "support": 6000.0
+          }
+        }
+      },
+      "test": {
+        "accuracy": 0.33316666666666667,
+        "macro_f1": 0.193705488592728,
+        "weighted_f1": 0.19479683557318836,
+        "log_loss": 1.0986822050623746,
+        "class_order": [
+          "DDoS",
+          "Intrusion",
+          "Malware"
+        ],
+        "confusion_matrix": [
+          [
+            1897,
+            0,
+            117
+          ],
+          [
+            1892,
+            0,
+            98
+          ],
+          [
+            1894,
+            0,
+            102
+          ]
+        ],
+        "per_class": {
+          "DDoS": {
+            "precision": 0.3338025690656343,
+            "recall": 0.9419066534260179,
+            "f1-score": 0.4929193192152787,
+            "support": 2014.0
+          },
+          "Intrusion": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1-score": 0.0,
+            "support": 1990.0
+          },
+          "Malware": {
+            "precision": 0.3217665615141956,
+            "recall": 0.05110220440881764,
+            "f1-score": 0.08819714656290532,
+            "support": 1996.0
+          },
+          "accuracy": 0.33316666666666667,
+          "macro avg": {
+            "precision": 0.21852304352660998,
+            "recall": 0.33100295261161183,
+            "f1-score": 0.193705488592728,
+            "support": 6000.0
+          },
+          "weighted avg": {
+            "precision": 0.21908740514675362,
+            "recall": 0.33316666666666667,
+            "f1-score": 0.19479683557318836,
+            "support": 6000.0
+          }
+        }
+      },
+      "artifact": "ml\\artifacts\\course\\classification_7.joblib"
+    }
+  },
+  "regression": {
+    "Dummy mean baseline": {
+      "fit_seconds": 0.1933508000220172,
+      "parameters": {
+        "constant": null,
+        "quantile": null,
+        "strategy": "mean"
+      },
+      "warnings": [],
+      "validation": {
+        "mae": 24.832492994761903,
+        "rmse": 28.743128423251196,
+        "r2": -0.00023086045511067077
+      },
+      "test": {
+        "mae": 25.221269985476187,
+        "rmse": 29.065570293419103,
+        "r2": -0.0006089858025910555
+      },
+      "artifact": "ml\\artifacts\\course\\regression_0.joblib"
+    },
+    "L3 Linear regression": {
+      "fit_seconds": 0.23184640001272783,
+      "parameters": {
+        "copy_X": true,
+        "fit_intercept": true,
+        "n_jobs": null,
+        "positive": false,
+        "tol": 1e-06
+      },
+      "warnings": [],
+      "validation": {
+        "mae": 24.835472001231572,
+        "rmse": 28.749713571714793,
+        "r2": -0.0006892255384840507
+      },
+      "test": {
+        "mae": 25.214266842460198,
+        "rmse": 29.0632290345615,
+        "r2": -0.0004477923166459341
+      },
+      "artifact": "ml\\artifacts\\course\\regression_1.joblib"
+    },
+    "L3 Ridge regression": {
+      "fit_seconds": 0.21273630001815036,
+      "parameters": {
+        "alpha": 1.0,
+        "copy_X": true,
+        "fit_intercept": true,
+        "max_iter": null,
+        "positive": false,
+        "random_state": null,
+        "solver": "auto",
+        "tol": 0.0001
+      },
+      "warnings": [],
+      "validation": {
+        "mae": 24.835471805635297,
+        "rmse": 28.74971286383566,
+        "r2": -0.0006891762602880824
+      },
+      "test": {
+        "mae": 25.214267236342177,
+        "rmse": 29.063228982024224,
+        "r2": -0.000447788699649454
+      },
+      "artifact": "ml\\artifacts\\course\\regression_2.joblib"
+    },
+    "L3 Decision tree regression": {
+      "fit_seconds": 0.45822800003224984,
+      "parameters": {
+        "ccp_alpha": 0.0,
+        "criterion": "squared_error",
+        "max_depth": 8,
+        "max_features": null,
+        "max_leaf_nodes": null,
+        "min_impurity_decrease": 0.0,
+        "min_samples_leaf": 20,
+        "min_samples_split": 2,
+        "min_weight_fraction_leaf": 0.0,
+        "monotonic_cst": null,
+        "random_state": 42,
+        "splitter": "best"
+      },
+      "warnings": [],
+      "validation": {
+        "mae": 25.028976487995845,
+        "rmse": 29.03376636731295,
+        "r2": -0.020560921796062948
+      },
+      "test": {
+        "mae": 25.299231968953865,
+        "rmse": 29.24635361175786,
+        "r2": -0.013094959785000304
+      },
+      "artifact": "ml\\artifacts\\course\\regression_3.joblib"
+    }
+  },
+  "clustering": {
+    "2": {
+      "validation_silhouette": 0.12438552166668584,
+      "train_inertia": 132923.12928203697,
+      "iterations": 13
+    },
+    "3": {
+      "validation_silhouette": 0.11302336460071152,
+      "train_inertia": 119961.2967683737,
+      "iterations": 29
+    },
+    "4": {
+      "validation_silhouette": 0.11440559375141131,
+      "train_inertia": 109885.83134718912,
+      "iterations": 23
+    },
+    "5": {
+      "validation_silhouette": 0.10474641618480995,
+      "train_inertia": 103505.25162626372,
+      "iterations": 48
+    },
+    "6": {
+      "validation_silhouette": 0.11325063756112769,
+      "train_inertia": 97736.15629589662,
+      "iterations": 61
+    }
+  },
+  "selected_classification": "L8 Decision tree",
+  "selected_regression": "Dummy mean baseline",
+  "selected_clustering_k": 2,
+  "clustering_test": {
+    "silhouette": 0.13171840056547274,
+    "davies_bouldin": 2.462629342393894,
+    "adjusted_rand_vs_attack_type": -0.00014093824354692388,
+    "normalized_mutual_information_vs_attack_type": 6.829072499477587e-05,
+    "cluster_sizes": {
+      "0": 3024,
+      "1": 2976
+    },
+    "cluster_feature_means": {
+      "0": {
+        "Packet Length": 411.0625,
+        "Source Port": 32792.847552910054,
+        "Destination Port": 33063.601851851854
+      },
+      "1": {
+        "Packet Length": 1140.9361559139784,
+        "Source Port": 33825.8373655914,
+        "Destination Port": 32976.57930107527
+      }
+    },
+    "cluster_attack_counts": {
+      "0": {
+        "DDoS": 1001,
+        "Intrusion": 1004,
+        "Malware": 1019
+      },
+      "1": {
+        "DDoS": 1013,
+        "Intrusion": 986,
+        "Malware": 977
+      }
+    }
+  },
+  "encoded_features": [
+    "num__Packet Length",
+    "num__Source Port",
+    "num__Destination Port",
+    "cat__Protocol_ICMP",
+    "cat__Protocol_TCP",
+    "cat__Protocol_UDP",
+    "cat__Packet Type_Control",
+    "cat__Packet Type_Data",
+    "cat__Traffic Type_DNS",
+    "cat__Traffic Type_FTP",
+    "cat__Traffic Type_HTTP",
+    "cat__Network Segment_Segment A",
+    "cat__Network Segment_Segment B",
+    "cat__Network Segment_Segment C"
+  ],
+  "elapsed_seconds": 47.97046769998269
+}

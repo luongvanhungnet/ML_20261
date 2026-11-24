@@ -1,0 +1,195 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Phân tích người dùng · KNN và K-means</title>
+  <style>
+    :root { color-scheme: light; font: 16px/1.55 system-ui, sans-serif; color: #142339; background: #f3f6fa; }
+    * { box-sizing: border-box; }
+    body { margin: 0; }
+    [hidden] { display: none !important; }
+    header { background: #11243b; color: #fff; padding: 3rem 0 4rem; border-bottom: 4px solid #32c5b3; }
+    header p { color: #c3d3e5; max-width: 62ch; }
+    h1, h2, h3, p { margin: 0; }
+    h1 { font-size: clamp(2rem, 5vw, 3.5rem); letter-spacing: -.045em; line-height: 1.1; margin-bottom: .65rem; }
+    h2 { font-size: 1.22rem; letter-spacing: -.02em; }
+    h3 { font-size: 1rem; }
+    .shell { width: min(1120px, calc(100% - 2rem)); margin-inline: auto; }
+    main { padding: 1.5rem 0 3rem; display: grid; gap: 1rem; }
+    .card { background: white; border: 1px solid #d8e1ec; border-radius: 14px; padding: clamp(1rem, 3vw, 1.5rem); min-width: 0; }
+    .card > p, .card > details { margin-top: .45rem; }
+    .muted, small { color: #475b73; }
+    .controls { display: flex; flex-wrap: wrap; align-items: end; gap: .75rem; margin-top: .9rem; }
+    .model-controls { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr)); gap: .75rem; }
+    .model-controls p { margin-top: .3rem; font-size: .85rem; }
+    label { display: grid; gap: .3rem; font-weight: 600; font-size: .9rem; min-width: 0; }
+    input, select, button { font: inherit; color: inherit; min-height: 2.6rem; border: 1px solid #aebed0; border-radius: 7px; background: white; }
+    input, select { width: 100%; padding: .35rem .55rem; }
+    input[type=file]::file-selector-button { font: inherit; padding: .25rem .5rem; margin-right: .55rem; border: 0; border-radius: 4px; background: #eaf0f8; color: #153a66; cursor: pointer; }
+    button { padding: .4rem .85rem; background: #174d8b; color: white; border-color: #174d8b; font-weight: 650; cursor: pointer; }
+    button:disabled { opacity: .6; cursor: wait; }
+    :focus-visible { outline: 3px solid #168b89; outline-offset: 2px; }
+    .status { min-height: 1.6em; }
+    .error { color: #9c2336; }
+    progress { width: 100%; height: .7rem; accent-color: #128578; }
+    .split { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: .6rem; margin: .9rem 0; }
+    .split div, .result div { background: #eff4fa; border-radius: 8px; padding: .65rem .8rem; }
+    dt { color: #425771; font-size: .83rem; }
+    dd { margin: .15rem 0 0; font-weight: 700; overflow-wrap: anywhere; }
+    .split dd { font-size: 1.2rem; font-variant-numeric: tabular-nums; }
+    .scroll { overflow-x: auto; margin-top: .7rem; }
+    table { border-collapse: collapse; width: 100%; font-variant-numeric: tabular-nums; font-size: .9rem; }
+    th, td { border-bottom: 1px solid #d8e1ec; text-align: left; padding: .65rem .7rem; vertical-align: top; }
+    thead th { background: #eaf1f9; color: #294565; white-space: nowrap; }
+    tbody tr:last-child > * { border-bottom: 0; }
+    .folds { margin-top: .2rem; }
+    .folds ul { margin: .3rem 0 0; padding-left: 1.2rem; white-space: nowrap; }
+    details summary { cursor: pointer; color: #174d8b; }
+    details p { margin-top: .45rem; }
+    .panel-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr); gap: 1rem; align-items: start; }
+    .search { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .result { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .5rem; margin: .8rem 0 .3rem; }
+    .bar-track { width: 100%; min-width: 65px; height: .55rem; margin-top: .45rem; border-radius: 5px; background: #e8eff8; }
+    .bar { height: 100%; border-radius: inherit; background: #138276; }
+    .chart-block { margin-top: 1.15rem; }
+    .chart-block > p { margin-top: .25rem; }
+    #matrix td { text-align: center; font-weight: 600; }
+    #matrix thead th:not(:first-child) { text-align: center; }
+    .chart-controls { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr); gap: .75rem; margin: .8rem 0; }
+    input[type=range] { accent-color: #174d8b; padding-inline: 0; margin: 0; }
+    .plot-frame { margin: .8rem 0 0; border: 1px solid #d8e1ec; border-radius: 9px; padding: .4rem; }
+    #cluster-plot { display: block; width: 100%; height: clamp(250px, 36vw, 360px); }
+    .legend { display: flex; flex-wrap: wrap; gap: .25rem .85rem; padding: 0; list-style: none; font-size: .85rem; margin: .65rem 0; }
+    .legend li { display: flex; align-items: center; gap: .35rem; }
+    .legend-mark { width: .65rem; height: .65rem; border-radius: 50%; background: #32527a; }
+    .legend-mark.center { transform: rotate(45deg); border-radius: 1px; }
+    .legend-mark.selected { border: 2px solid #142339; background: white; }
+    .nowrap { white-space: nowrap; }
+    code { overflow-wrap: anywhere; }
+    @media (max-width: 720px) { .panel-grid { grid-template-columns: 1fr; } .split { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+    @media (max-width: 460px) { .search, .result, .chart-controls { grid-template-columns: 1fr; } header { padding: 2rem 0; } }
+  </style>
+  <script defer src="user-models.js"></script>
+  <script defer src="user-classification.js"></script>
+</head>
+<body>
+  <header>
+    <div class="shell">
+      <h1>Phân tích người dùng</h1>
+      <p>So sánh phân loại bằng KNN và phân nhóm hành vi bằng K-means trên dữ liệu lưu lượng mạng.</p>
+    </div>
+  </header>
+  <main class="shell">
+    <section class="card" aria-labelledby="source-title">
+      <h2 id="source-title">Dữ liệu đầu vào</h2>
+      <p class="muted">Chọn <code>dataset/cybersecurity_attacks.csv</code> hoặc một CSV cùng cấu trúc. Trang xử lý dữ liệu trong trình duyệt.</p>
+      <div class="controls">
+        <label>Chọn tệp CSV <input id="file" type="file" accept=".csv,text/csv"></label>
+        <button type="button" id="default-data" hidden>Dùng dataset của dự án</button>
+      </div>
+      <div class="controls">
+        <label>Điền độ dài gói tin bị thiếu
+          <select id="imputation">
+            <option value="median">Median (trung vị)</option>
+            <option value="mean">Mean (trung bình)</option>
+          </select>
+        </label>
+        <button type="button" id="rerun" disabled>Áp dụng và chạy lại</button>
+      </div>
+      <p class="status muted" id="status" role="status">Đang chờ dữ liệu.</p>
+      <progress id="progress" aria-label="Tiến độ phân tích" max="7" value="0" hidden></progress>
+    </section>
+    <section class="card" id="results" aria-labelledby="results-title" hidden>
+      <h2 id="results-title">So sánh kết quả</h2>
+      <dl class="split" id="split"></dl>
+      <p class="muted" id="preprocessing-summary"></p>
+      <div class="model-controls">
+        <div>
+          <label for="knn-k">Số láng giềng (k) của KNN
+            <select id="knn-k" aria-describedby="knn-k-status"></select>
+          </label>
+          <p class="muted" id="knn-k-status" role="status"></p>
+        </div>
+        <div>
+          <label for="kmeans-k">Số cụm (k) của K-means
+            <select id="kmeans-k" aria-describedby="kmeans-k-status"></select>
+          </label>
+          <p class="muted" id="kmeans-k-status" role="status"></p>
+        </div>
+      </div>
+      <p class="muted">Bảng dùng Macro F1 cho KNN và Silhouette cho K-means. Đọc điểm theo từng thước đo và bài toán.</p>
+      <div class="scroll" tabindex="0" role="region" aria-label="Bảng so sánh hai thuật toán">
+        <table>
+          <thead><tr><th scope="col">Thuật toán</th><th scope="col">Đầu ra</th><th scope="col">Validation 10%</th><th scope="col">CV 5-fold</th><th scope="col">Test 20%</th><th scope="col">k đang dùng</th></tr></thead>
+          <tbody id="comparison"></tbody>
+        </table>
+      </div>
+      <details>
+        <summary>Cách chia dữ liệu và chấm điểm</summary>
+        <p>Gộp theo <code>User Information</code>. Mỗi tên là một hồ sơ, nên hai người trùng tên có thể bị gộp. Mỗi lượt tính mean hoặc median từ độ dài gói có sẵn trong tập train, điền các giá trị thiếu rồi tính độ dài trung bình mỗi hồ sơ. Z-score dùng trung bình và độ lệch chuẩn của các hồ sơ train sau khi điền.</p>
+        <p>One-hot áp dụng cho giao thức, loại gói, loại lưu lượng và phân đoạn mạng. Giá trị trống hoặc ngoài danh mục vào nhóm Khác. Lấy trung bình các chỉ báo one-hot trong mỗi hồ sơ tạo thành 15 tỷ lệ giữa 0 và 1.</p>
+        <p>Chia cố định theo hồ sơ với seed 42. Cột Validation 10% dùng Train 70% để đánh giá k ban đầu ở chế độ tự động hoặc k đã chọn ở chế độ thủ công. Trên tập phát triển 80%, mỗi lượt CV fit bằng 4 fold và chấm trên fold còn lại. Chế độ tự động chọn k theo điểm CV trung bình. Cột Test 20% dùng k đang hiển thị và mô hình fit trên 80% dữ liệu phát triển.</p>
+        <p>KNN thử k ∈ {1, 3, 7, 15} trong giới hạn mẫu huấn luyện. Loại tấn công phổ biến nhất trong hồ sơ được dùng làm nhãn nếu có một loại đứng đầu duy nhất. K-means thử k ∈ {2, 3, 4, 5}, khởi tạo bằng K-means++ và tính Silhouette trên tối đa 256 hồ sơ của mỗi tập đánh giá.</p>
+      </details>
+    </section>
+    <section class="card" id="profiles" aria-labelledby="lookup-title" hidden>
+      <h2 id="lookup-title">Chọn hồ sơ trong tập test</h2>
+      <div class="search controls">
+        <label>Tìm theo tên <input id="query" type="search" placeholder="Nhập tên người dùng"></label>
+        <label>Hồ sơ <select id="profile"></select></label>
+      </div>
+      <p class="muted" id="match-count" aria-live="polite"></p>
+      <dl class="result" id="prediction" aria-live="polite"></dl>
+      <p class="muted" id="observed"></p>
+    </section>
+    <div class="panel-grid" id="visualizations" hidden>
+      <section class="card" aria-labelledby="knn-title">
+        <h2 id="knn-title">KNN · Loại tấn công</h2>
+        <div class="chart-block">
+          <h3 id="neighbors-title">Láng giềng của hồ sơ đang chọn</h3>
+          <p class="muted" id="vote-summary" aria-live="polite"></p>
+          <div class="scroll" id="neighbor-scroll" tabindex="0" role="region" aria-labelledby="neighbors-title">
+            <table>
+              <thead><tr><th scope="col">Láng giềng</th><th scope="col">Nhãn</th><th scope="col">Khoảng cách</th></tr></thead>
+              <tbody id="neighbors"></tbody>
+            </table>
+          </div>
+        </div>
+        <div class="chart-block" id="matrix-block">
+          <h3 id="matrix-title">Ma trận nhầm lẫn trên tập test</h3>
+          <p class="muted">Hàng là nhãn thực tế, cột là dự đoán. Màu đậm hơn biểu thị tỷ lệ lớn hơn trong cùng hàng.</p>
+          <div class="scroll" tabindex="0" role="region" aria-labelledby="matrix-title">
+            <table id="matrix"></table>
+          </div>
+        </div>
+      </section>
+      <section class="card" aria-labelledby="clusters-title">
+        <h2 id="clusters-title">K-means · Cụm hành vi</h2>
+        <div class="chart-controls">
+          <label>Đặc trưng trục dọc <select id="plot-feature"></select></label>
+          <label><span id="iteration-label">Vòng cập nhật tâm</span><input id="iteration" type="range" min="0" step="1"></label>
+        </div>
+        <p class="muted" id="plot-sample"></p>
+        <p class="muted">Biểu đồ hiển thị hai đặc trưng. Mô hình gán cụm theo toàn bộ đặc trưng.</p>
+        <figure class="plot-frame">
+          <canvas id="cluster-plot" role="img" aria-label="Biểu đồ cụm K-means theo độ dài gói trung bình và đặc trưng trục dọc"></canvas>
+          <figcaption>
+            <ul class="legend" id="cluster-legend"></ul>
+            <small id="plot-selection" aria-live="polite"></small>
+          </figcaption>
+        </figure>
+        <div class="chart-block">
+          <h3>Phân bố cụm cuối trên tập test</h3>
+          <div class="scroll">
+            <table>
+              <thead><tr><th scope="col">Cụm</th><th scope="col">Hồ sơ</th><th scope="col">Bản ghi</th><th scope="col">Độ dài TB</th></tr></thead>
+              <tbody id="cluster-counts"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+</body>
+</html>

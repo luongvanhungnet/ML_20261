@@ -1,0 +1,113 @@
+﻿<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Algorithm Explorer</title>
+<style>
+  :root { font: 16px/1.5 system-ui, sans-serif; color: #17263a; background: #edf2f7; }
+  * { box-sizing: border-box; }
+  body { margin: 0; }
+  main { width: min(1180px, 100%); margin: auto; padding: 28px clamp(12px, 3vw, 32px) 48px; }
+  h1, h2, p { margin: 0; }
+  h1 { font-size: clamp(1.8rem, 5vw, 2.7rem); letter-spacing: -.04em; }
+  h2 { font-size: 1.13rem; }
+  header p, .muted, small { color: #4e6177; }
+  .grid { display: grid; grid-template-columns: minmax(0, 2fr) minmax(0, 1fr); gap: 16px; margin-top: 20px; align-items: start; }
+  .stack { display: grid; gap: 16px; min-width: 0; }
+  section { background: #fff; border: 1px solid #cfdae6; border-radius: 12px; padding: 16px; }
+  .parameters { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 10rem), 1fr)); gap: 12px; margin-top: 12px; }
+  label { display: grid; gap: 4px; font-size: .87rem; font-weight: 600; }
+  input, select, button { font: inherit; color: inherit; }
+  input, select, button { border: 1px solid #91a4b9; background: white; border-radius: 6px; padding: 5px 8px; min-height: 36px; }
+  input, select { width: 100%; }
+  button { cursor: pointer; }
+  button:disabled { opacity: .5; cursor: default; }
+  #play { background: #115971; color: white; border-color: #115971; }
+  .toolbar { display: flex; flex-wrap: wrap; gap: 8px; margin: 12px 0 6px; }
+  #step { padding: 0; accent-color: #115971; }
+  #diagram { min-height: 260px; }
+  svg { display: block; width: 100%; height: auto; max-height: 360px; }
+  #description { min-height: 3em; overflow-wrap: anywhere; }
+  .step-details-panel { background: #edf5f8; border-radius: 8px; padding: 12px; margin-bottom: 8px; overflow-wrap: anywhere; }
+  .step-details-panel p { margin-top: 4px; font-variant-numeric: tabular-nums; }
+  #legend { font-size: .84rem; margin-bottom: 8px; }
+  .active { background: #d9f0f1; color: #064653; font-weight: 650; }
+  ol { padding-left: 1.65em; margin-bottom: 0; }
+  li { padding: 5px; border-radius: 5px; }
+  li code { display: block; margin-top: 4px; font-size: .8rem; overflow-wrap: anywhere; }
+  dl { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 8px 12px; font-size: .87rem; }
+  dd { margin: 0; text-align: right; font-variant-numeric: tabular-nums; }
+  .analysis { margin: 12px 0 8px; }
+  #comparison-result { margin: 8px 0; }
+  table { border-collapse: collapse; width: 100%; font-variant-numeric: tabular-nums; font-size: .9rem; }
+  th, td { text-align: left; border-bottom: 1px solid #d9e2ec; padding: 4px 8px; }
+  @media (max-width: 760px) { .grid { grid-template-columns: minmax(0, 1fr); } }
+</style>
+<script defer src="algorithm-simulation.js"></script>
+<script defer src="algorithm-explorer.js"></script>
+</head>
+<body>
+<main>
+  <header>
+    <h1>Algorithm Explorer</h1>
+    <p>Mô phỏng thuật toán ML trên dữ liệu tổng hợp có thể tái lập.</p>
+  </header>
+  <div class="grid">
+    <div class="stack">
+      <section aria-labelledby="settings">
+        <h2 id="settings">Thuật toán và tham số</h2>
+        <label for="method">Thuật toán</label>
+        <select id="method"></select>
+        <div class="parameters" id="parameters"></div>
+      </section>
+      <section aria-labelledby="simulation">
+        <h2 id="simulation">Mô phỏng từng bước</h2>
+        <div class="toolbar">
+          <button id="reset" type="button">Về đầu</button>
+          <button id="previous" type="button">← Lùi</button>
+          <button id="next" type="button">Tiến →</button>
+          <button id="play" type="button">Phát</button>
+          <button id="finish" type="button">Đến cuối</button>
+        </div>
+        <label for="step" id="position">Bước</label>
+        <input id="step" type="range" min="0" value="0" step="1">
+        <div id="diagram"></div>
+        <p id="legend" class="muted"></p>
+        <div id="step-details"></div>
+        <p id="description" aria-live="polite"></p>
+      </section>
+    </div>
+    <div class="stack">
+      <section aria-labelledby="pseudocode-heading">
+        <h2 id="pseudocode-heading">Pseudocode</h2>
+        <ol id="pseudocode"></ol>
+      </section>
+      <section aria-labelledby="metrics-heading">
+        <h2 id="metrics-heading">Chi phí và kết quả</h2>
+        <dl>
+          <dt>Số bước đã tới</dt><dd id="steps"></dd>
+          <dt>Thời gian tính tích lũy</dt><dd id="elapsed"></dd>
+          <dt>Phép xử lý được đếm</dt><dd id="work"></dd>
+          <dt>Quy mô mô hình</dt><dd id="model-size"></dd>
+          <dt>Lịch sử mô phỏng (JSON)</dt><dd id="memory"></dd>
+          <dt>Điểm trên mẫu mô phỏng</dt><dd id="score"></dd>
+        </dl>
+        <p id="complexity" class="analysis"></p>
+        <small id="work-unit"></small>
+        <p><small>Thời gian đo bằng performance.now() đến bước đang xem, bỏ qua vẽ và tính điểm. Dung lượng JSON là kích thước lịch sử phát lại khi tuần tự hóa. Đây là số đo cục bộ trên dữ liệu nhỏ.</small></p>
+      </section>
+      <section aria-labelledby="comparison-heading">
+        <h2 id="comparison-heading">So sánh cấu hình</h2>
+        <p class="muted">Lưu một mốc, rồi thay đổi tham số. Bảng dùng kết quả cuối của hai lượt chạy.</p>
+        <div class="toolbar">
+          <button id="save-baseline" type="button">Lưu cấu hình làm mốc</button>
+          <button id="clear-baseline" type="button" disabled>Xóa mốc</button>
+        </div>
+        <div id="comparison-result" aria-live="polite"></div>
+      </section>
+    </div>
+  </div>
+</main>
+</body>
+</html>
