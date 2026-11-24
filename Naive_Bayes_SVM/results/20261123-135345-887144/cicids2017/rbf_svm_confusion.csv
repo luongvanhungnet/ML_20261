@@ -1,0 +1,4 @@
+actual / predicted,DDoS,Malware,Intrusion
+DDoS,25434,1,3
+Malware,0,275,2
+Intrusion,4,0,421
